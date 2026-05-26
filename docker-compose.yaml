@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: birthday-notifier-db
+    restart: on-failure
+    environment:
+      POSTGRES_DB: birthday_notifier_database
+      POSTGRES_USER: dev
+      POSTGRES_PASSWORD: dev123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_bd_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_bd_data:
