@@ -1,6 +1,7 @@
 package com.maxiamikel19.birthday_notifier_api.service.impl;
 
 import com.maxiamikel19.birthday_notifier_api.dto.request.MemberCreateRequest;
+import com.maxiamikel19.birthday_notifier_api.dto.request.MemberFilter;
 import com.maxiamikel19.birthday_notifier_api.dto.request.UpdateMemberRequest;
 import com.maxiamikel19.birthday_notifier_api.entity.Member;
 import com.maxiamikel19.birthday_notifier_api.exception.InputValidationException;
@@ -8,11 +9,13 @@ import com.maxiamikel19.birthday_notifier_api.exception.ResourceDuplicatedExcept
 import com.maxiamikel19.birthday_notifier_api.exception.ResourceNotFoundException;
 import com.maxiamikel19.birthday_notifier_api.mapper.MemberMapper;
 import com.maxiamikel19.birthday_notifier_api.repository.MemberRepository;
+import com.maxiamikel19.birthday_notifier_api.repository.specification.MemberSpecification;
 import com.maxiamikel19.birthday_notifier_api.service.IMemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,11 +61,17 @@ public class MemberServiceImpl implements IMemberService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<Member> searchMembers(Pageable pageable) {
+    public Page<Member> searchMembers(MemberFilter filter, Pageable pageable) {
         if (pageable.getPageSize() > 50) {
             throw new InputValidationException("Maximum page size allowed is 50");
         }
-        return memberRepository.findAll(pageable);
+
+        if(filter.month() != null && (filter.month() < 1 || filter.month() > 12)){
+            throw new InputValidationException("Month value must be between 1 and 12");
+        }
+
+        Specification<Member> specification = MemberSpecification.withFilters(filter);
+        return memberRepository.findAll(specification, pageable);
     }
 
     @Override

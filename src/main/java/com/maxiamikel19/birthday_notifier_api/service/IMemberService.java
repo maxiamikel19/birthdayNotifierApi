@@ -1,6 +1,7 @@
 package com.maxiamikel19.birthday_notifier_api.service;
 
 import com.maxiamikel19.birthday_notifier_api.dto.request.MemberCreateRequest;
+import com.maxiamikel19.birthday_notifier_api.dto.request.MemberFilter;
 import com.maxiamikel19.birthday_notifier_api.dto.request.UpdateMemberRequest;
 import com.maxiamikel19.birthday_notifier_api.entity.Member;
 import org.springframework.data.domain.Page;
@@ -14,7 +15,7 @@ public interface IMemberService {
 
     Member findById(UUID id);
 
-    Page<Member> searchMembers(Pageable pageable);
+    Page<Member> searchMembers(MemberFilter filter, Pageable pageable);
 
     Member update(UUID id, UpdateMemberRequest request);
 

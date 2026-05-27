@@ -1,6 +1,7 @@
 package com.maxiamikel19.birthday_notifier_api.controller;
 
 import com.maxiamikel19.birthday_notifier_api.dto.request.MemberCreateRequest;
+import com.maxiamikel19.birthday_notifier_api.dto.request.MemberFilter;
 import com.maxiamikel19.birthday_notifier_api.dto.request.UpdateMemberRequest;
 import com.maxiamikel19.birthday_notifier_api.dto.response.MemberResponse;
 import com.maxiamikel19.birthday_notifier_api.dto.response.PageResponse;
@@ -42,12 +43,13 @@ public class MemberController {
         return ResponseEntity.ok(memberMapper.toResponse(memberService.findById(id)));
     }
 
-    @GetMapping("/search")
+    @GetMapping
     public ResponseEntity<PageResponse<MemberResponse>> searchMembers(
+            MemberFilter filter,
             @PageableDefault(size = 2, page = 0, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
 
-        Page<Member> members = memberService.searchMembers(pageable);
+        Page<Member> members = memberService.searchMembers(filter,pageable);
         List<MemberResponse> memberList = members
                 .stream()
                 .map(memberMapper::toResponse).toList();
