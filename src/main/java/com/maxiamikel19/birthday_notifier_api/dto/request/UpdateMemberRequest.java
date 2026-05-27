@@ -17,11 +17,6 @@ public record UpdateMemberRequest(
 
         String phoneNumber,
 
-        @Past(message = "Birth date must be in the past")
-        LocalDate birthDate,
-
-        Gender gender,
-
         @PastOrPresent(message = "Affiliation date cannot be in the future")
         LocalDate affiliationDate,
 
