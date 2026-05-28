@@ -2,11 +2,14 @@ package com.maxiamikel19.birthday_notifier_api.service.impl;
 
 import java.util.List;
 
+import org.hibernate.annotations.RowId;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.maxiamikel19.birthday_notifier_api.entity.Member;
 import com.maxiamikel19.birthday_notifier_api.repository.MemberRepository;
 import com.maxiamikel19.birthday_notifier_api.service.IBirthdayService;
+import com.maxiamikel19.birthday_notifier_api.service.IEmailService;
 import com.maxiamikel19.birthday_notifier_api.service.INotificationService;
 
 import lombok.RequiredArgsConstructor;
@@ -19,6 +22,10 @@ public class NotificationServiceImpl implements INotificationService {
 
     private final IBirthdayService birthdayService;
     private final MemberRepository memberRepository;
+    private final IEmailService emailService;
+
+    @Value("${api.birthday.interval-days}")
+    private int intervalDays;
 
     @Override
     public void notifyCurrentBirthdays() {
@@ -35,6 +42,7 @@ public class NotificationServiceImpl implements INotificationService {
             if (recipient.getActive()) {
                 log.info("Notifying to: %s: Today is the birthday of: %s".formatted(recipient.getFirstName(),
                         birthdayNames));
+                emailService.sendCurrentBirthdayEmails(recipient, birthdayNames);
             }
         }
 
@@ -54,6 +62,7 @@ public class NotificationServiceImpl implements INotificationService {
             if (recipient.getActive()) {
                 log.info("Notifying to: %s about upcoming birthdays: %s".formatted(recipient.getFullName(),
                         birthdayNames));
+                emailService.sendUpcomingBirthdayEmails(recipient, birthdayNames, intervalDays);
             }
         }
     }
@@ -68,6 +77,7 @@ public class NotificationServiceImpl implements INotificationService {
         for (Member recipient : monthBirthdays) {
             if (recipient.getActive()) {
                 log.info("Hi %s, great to wish you a happy birthday!".formatted(recipient.getFullName()));
+                emailService.sendBirthdaysCongratulationEmails(recipient);
             }
         }
     }
