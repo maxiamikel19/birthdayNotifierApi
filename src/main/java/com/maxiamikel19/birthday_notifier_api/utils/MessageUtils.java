@@ -7,31 +7,19 @@ public class MessageUtils {
 
     public static String generateUpcomingMessage(String recipientName, String birthdayNames, int dayInterval) {
 
-        return """
-                Hi %s,
-                In %d days it will be the birthday of %s.
-                Don't forget to congratulate them.
-                """
+        return "Hi %s. In %d days it will be the birthday of %s.Don't forget to congratulate them."
                 .formatted(recipientName, dayInterval, birthdayNames);
     }
 
     public static String generateCurrentBirthdayMessage(String recipientName, String birthdayNames) {
 
-        return """
-                Hi %s,
-                Today is the birthday of %s.
-                Don't forget to congratulate them.
-                """
-                .formatted(recipientName, birthdayNames);
+        return "Hi %s. Today is the birthday of %s. Don't forget to congratulate them.".formatted(recipientName,
+                birthdayNames);
     }
 
     public static String generateCongratulationsMessage(String fullName) {
 
-        return """
-                Hello %s,
-                Today the whole team wishes you a very happy birthday.
-                Enjoy your special day!
-                """
+        return "Hello %s. Today the whole assemblea wishes you a very happy birthday.Enjoy your special day."
                 .formatted(fullName);
     }
 

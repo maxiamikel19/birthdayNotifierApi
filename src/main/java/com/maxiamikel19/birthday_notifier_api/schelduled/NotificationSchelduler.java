@@ -42,7 +42,7 @@ public class NotificationSchelduler {
     public void notifyBirthdaysCongratulations() {
         log.info("Starting birthday congratulations");
         try {
-            notificationService.notifyCurrentBirthdays();
+            notificationService.notifyBirthdaysCongratulations();
             log.info("Finished birthday congratulations");
         } catch (Exception ex) {
             log.error("Error sending birthday congratulations", ex);
