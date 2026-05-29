@@ -31,7 +31,6 @@ public class MemberServiceImpl implements IMemberService {
     private final MemberRepository memberRepository;
     private final MemberMapper memberMapper;
 
-
     @Override
     @Transactional
     public Member create(MemberCreateRequest request) {
@@ -44,7 +43,7 @@ public class MemberServiceImpl implements IMemberService {
 
         Member member = memberMapper.toEntity(request);
 
-         member = memberRepository.save(member);
+        member = memberRepository.save(member);
 
         member.setAffiliationNumber(generateCode(member));
 
@@ -66,7 +65,7 @@ public class MemberServiceImpl implements IMemberService {
             throw new InputValidationException("Maximum page size allowed is 50");
         }
 
-        if(filter.month() != null && (filter.month() < 1 || filter.month() > 12)){
+        if (filter.month() != null && (filter.month() < 1 || filter.month() > 12)) {
             throw new InputValidationException("Month value must be between 1 and 12");
         }
 
@@ -127,7 +126,7 @@ public class MemberServiceImpl implements IMemberService {
                 .orElseThrow(() -> new ResourceNotFoundException("Member not found with id: " + id));
     }
 
-    private void updateEntityFromRequest(UpdateMemberRequest request, Member member){
+    private void updateEntityFromRequest(UpdateMemberRequest request, Member member) {
         if (request.firstName() != null) {
             member.setFirstName(request.firstName());
         }
