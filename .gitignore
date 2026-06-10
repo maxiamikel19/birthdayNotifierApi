@@ -34,3 +34,4 @@ build/
 
 #Config
 application.yaml
+.env

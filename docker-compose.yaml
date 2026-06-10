@@ -11,6 +11,28 @@ services:
       - "5432:5432"
     volumes:
       - postgres_bd_data:/var/lib/postgresql/data
+    networks:
+      - birthday-api-network
+
+  birthdayapp:
+    build:
+      dockerfile: Dockerfile
+    container_name: birthday-notifier-app
+    restart: on-failure
+    depends_on:
+      - postgres
+    ports:
+      - "8080:8080"
+    networks:
+      - birthday-api-network
+    environment:
+      SPRING_PROFILES_ACTIVE: production
+    env_file:
+      - .env
 
 volumes:
   postgres_bd_data:
+
+networks:
+  birthday-api-network:
+    driver: bridge
